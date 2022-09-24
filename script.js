@@ -26,8 +26,8 @@ const gameboard = (() => {
   let tile = (number) => {
     let player;
 
-    let setPlayer = (player) => {
-      this.player = player;
+    let setPlayer = (pl) => {
+      player = pl;
     };
 
     let getPlayer = () => {
@@ -59,9 +59,11 @@ const gameboard = (() => {
   };
 
   let play = (tileNum) => {
-    let tile = getTile(tileNum);
+    let tile = gameboard.getTile(tileNum);
     let player = controller.nextPlayer();
-    tile.setPlayer();
+    tile.setPlayer(player);
+    controller.condition(parseInt(tileNum));
+    //Must execute controller.condition() here
     player.playTurn();
   };
 
@@ -89,18 +91,22 @@ let controller = (() => {
       return playerOne;
     } else {
       return playerTwo;
-    } 
+    }
   };
 
   let condition = (move) => {
     for (const winMove of winningMoves) {
-      (function () {
-        if (winMove.includes(move)) {
-          let playerTileCount;
-          for (const tileNum of winMove) {
+      if (winMove.includes(move)) {
+        let playerTileCount = 0;
+        for (const tileNum of winMove) {
+          if (gameboard.getTile(tileNum).getPlayer() === nextPlayer()) {
+            playerTileCount++;
+            if (playerTileCount === 3) {
+              alert(`${nextPlayer().getName()} wins`);
+            }
           }
         }
-      }.call(winMove));
+      }
     }
   };
 
@@ -120,16 +126,17 @@ let display = (() => {
   }
 
   gameContainer.addEventListener("click", (e) => {
-    let tileElement = e.target
+    let tileElement = e.target;
     if (tileElement.classList.contains("tile")) {
-        let tileNum = tileElement.dataset.tileNumber;
+      let tileNum = tileElement.dataset.tileNumber;
       //check which player has next turn
       let player = controller.nextPlayer();
-      //update display
+      if (gameboard.getTile(tileNum).getPlayer() === undefined) {
+        //update display
         tileElement.innerHTML = player.getModel();
-      //call gameboard.play()
-      gameboard.play(tileNum);
+        //call gameboard.play()
+        gameboard.play(tileNum);
+      }
     }
   });
 })();
-

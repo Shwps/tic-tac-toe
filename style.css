@@ -1,8 +1,30 @@
+* {
+  font-family: sans-serif;
+}
+
+body {
+  background-color: rgb(200, 196, 243);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
 .tile {
-  background-color: green;
-  border: solid 1px black;
+  background-color: rgb(110, 143, 235);
+  border-radius: 10px;
+  border: solid 1px rgb(22, 86, 138);
+  box-shadow: inset 2px 2px 6px 1px rgb(60, 98, 224);
   width: 100px;
   height: 100px;
+  font-weight: 800;
+  font-size: 66px;
+  text-align: center;
+  transition: 0.5s;
+}
+
+.tile:hover {
+  transform:scale(1.03);
 }
 
 .game-container {
@@ -11,4 +33,5 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
+  gap:1em;
 }
