@@ -58,23 +58,35 @@ const gameboard = (() => {
     }
   };
 
+  let reset = () => {
+    gameboardArray = [];
+    tileCounter = 0;
+
+    while (tileCounter < 9) {
+      gameboardArray.push(Object.create(tile(tileCounter++)));
+    }
+
+    playerOne = Object.create(player("one", "x"));
+    playerTwo = Object.create(player("two", "o"));
+
+    display.clear();
+    display.lockToggle();
+  };
+
   let play = (tileNum) => {
     let tile = gameboard.getTile(tileNum);
     let player = controller.nextPlayer();
     tile.setPlayer(player);
-    controller.condition(parseInt(tileNum));
     //Must execute controller.condition() here
+    controller.condition(parseInt(tileNum));
     player.playTurn();
+    controller.isTie();
   };
 
-  return { getPlayers, getGameboard, getTile, play };
+  return { getPlayers, getGameboard, getTile, play, reset };
 })();
 
 let controller = (() => {
-  let players = gameboard.getPlayers();
-  let playerOne = players[0];
-  let playerTwo = players[1];
-
   const winningMoves = [
     [0, 1, 2],
     [3, 4, 5],
@@ -87,22 +99,27 @@ let controller = (() => {
   ];
 
   let nextPlayer = () => {
-    if (playerOne.getTurnsPlayed() === playerTwo.getTurnsPlayed()) {
-      return playerOne;
+    if (
+      gameboard.getPlayers()[0].getTurnsPlayed() ===
+      gameboard.getPlayers()[1].getTurnsPlayed()
+    ) {
+      return gameboard.getPlayers()[0];
     } else {
-      return playerTwo;
+      return gameboard.getPlayers()[1];
     }
   };
 
   let condition = (move) => {
+    const player = nextPlayer();
     for (const winMove of winningMoves) {
       if (winMove.includes(move)) {
         let playerTileCount = 0;
         for (const tileNum of winMove) {
-          if (gameboard.getTile(tileNum).getPlayer() === nextPlayer()) {
+          if (gameboard.getTile(tileNum).getPlayer() === player) {
             playerTileCount++;
             if (playerTileCount === 3) {
-              alert(`${nextPlayer().getName()} wins`);
+              display.displayOutcome(player);
+              display.lockToggle();
             }
           }
         }
@@ -110,13 +127,25 @@ let controller = (() => {
     }
   };
 
-  return { nextPlayer, condition };
+  let isTie = () => {
+    if (
+      gameboard.getPlayers()[0].getTurnsPlayed() +
+        gameboard.getPlayers()[1].getTurnsPlayed() ==
+      9
+    ) {
+      display.displayOutcome();
+    }
+  };
+
+  return { nextPlayer, condition, isTie };
 })();
 
 let display = (() => {
-  const gameContainer = document.createElement("div");
-  gameContainer.classList.add("game-container");
-  document.body.appendChild(gameContainer);
+  const gameContainer = document.querySelector(".game-container");
+  const resultStatusContainer = document.querySelector(
+    ".result-status-container"
+  );
+  const resetButton = document.querySelector(".reset-btn");
 
   for (i = 0; i < 9; i++) {
     let tileElement = document.createElement("div");
@@ -133,10 +162,55 @@ let display = (() => {
       let player = controller.nextPlayer();
       if (gameboard.getTile(tileNum).getPlayer() === undefined) {
         //update display
-        tileElement.innerHTML = player.getModel();
+        displayMove(tileElement);
         //call gameboard.play()
         gameboard.play(tileNum);
       }
     }
   });
+
+  resetButton.addEventListener("click", () => {
+    gameboard.reset();
+  });
+
+  let clear = () => {
+    const pieces = document.querySelectorAll(".piece");
+    pieces.forEach((piece) => {
+      piece.remove();
+    });
+    resultStatusContainer.innerHTML = "";
+    resetButton.style = "";
+  };
+
+  let displayMove = (tileElement) => {
+    let moveContainer = document.createElement("img");
+    moveContainer.classList.add("piece");
+    if (controller.nextPlayer().getModel() === "x") {
+      moveContainer.src = "/img/close.png";
+    } else {
+      moveContainer.src = "/img/button.png";
+    }
+    tileElement.appendChild(moveContainer);
+  };
+
+  let displayOutcome = (winner) => {
+    if (winner === undefined) {
+      resultStatusContainer.innerHTML = "It's a tie";
+      //tie
+    } else if (winner.getModel() === "x") {
+      resultStatusContainer.innerHTML = "Player X wins";
+    } else {
+      resultStatusContainer.innerHTML = "Player O wins";
+    }
+    resetButton.style = "background-color: green";
+  };
+
+  let lockToggle = () => {
+    if (gameContainer.classList.contains("gameboard-lock")) {
+      gameContainer.classList.remove("gameboard-lock");
+    } else {
+      gameContainer.classList.add("gameboard-lock");
+    }
+  };
+  return { displayOutcome, lockToggle, clear };
 })();

@@ -1,16 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
+
 * {
-  font-family: sans-serif;
+  font-family: Fira Sans, sans-serif;
 }
 
 body {
   background-color: rgb(200, 196, 243);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 90vh;
 }
 
 .tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: rgb(110, 143, 235);
   border-radius: 10px;
   border: solid 1px rgb(22, 86, 138);
@@ -19,19 +25,68 @@ body {
   height: 100px;
   font-weight: 800;
   font-size: 66px;
-  text-align: center;
   transition: 0.5s;
+  cursor: pointer;
+}
+
+.gameboard-lock {
+  pointer-events: none;
+}
+
+.piece {
+  width: 60%;
+  filter: invert(100%);
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .tile:hover {
-  transform:scale(1.03);
+  transform: scale(1.03);
 }
 
 .game-container {
-    width: 300px;
-    width: 300px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap:1em;
+  gap: 1em;
+}
+
+.result-status-container {
+  padding: 1%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.reset-btn {
+  color: white;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1px;
+  padding: 1rem;
+  width: 8rem;
+  background-color: rgb(110, 143, 235);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 2px 2px 6px 1px rgb(60, 98, 224);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.reset-btn:hover {
+  transform: scale(1.1);
+  background-color: rgb(113, 147, 241);
+  box-shadow: 2px 2px 6px 1px rgb(89, 118, 212);
 }
