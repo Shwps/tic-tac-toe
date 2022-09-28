@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="script.js" defer></script>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="name-selection">
+      <input
+        type="text"
+        name=""
+        placeholder="Player 1"
+        id="blue-player"
+      /><input type="text" name="" id="red-player" placeholder="Player 2" />
+    </div>
     <div class="game-container"></div>
-    <div class="result-status-container"></div>
+    <div class="result-status-container">
+        <p class="result-text"></p>
+      <div class="scoreboard">
+        <div class="score-bar" id="blue-bar"></div>
+        <div class="score-bar" id="red-bar"></div>
+      </div>
+    </div>
     <div class="menu"><button class="reset-btn">RESET</button></div>
-    <!--<a href="https://www.flaticon.com/free-icons/dot" title="dot icons">Dot icons created by Google - Flaticon</a>-->
-</body>
+    <div class="menu"><button class="next-game">Next game</button></div>
+    <!--<a href="https://www.flaticon.com/free-icons/" title="icons"> Icons collected from - Flaticon</a>-->
+  </body>
 </html>

@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: rgb(200, 196, 243);
+  background-color: rgb(245, 241, 241);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,14 +13,55 @@ body {
   height: 90vh;
 }
 
+.name-selection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2rem;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0px 2px 8px 2px rgba(134, 134, 134, 0.329);
+}
+
+
+
+input[type="text"] {
+  box-sizing: border-box;
+  font-size: 24px;
+  color: white;
+  border: none;
+  height: 2rem;
+  width: 12rem;
+  outline: none;
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.589);
+}
+
+#blue-player {
+  border-radius: 10px 0 0 0;
+  padding-left: 6px;
+  background-color: #3452eb;
+}
+
+#red-player {
+  border-radius: 0 10px 0 0;
+  padding-right: 6px;
+  background-color: #eb4034;
+  text-align: end;
+}
+
+.scoreboard-lower {
+  background-color: white;
+}
+
 .tile {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(110, 143, 235);
+  background-color: rgb(250, 252, 253);
   border-radius: 10px;
-  border: solid 1px rgb(22, 86, 138);
-  box-shadow: inset 2px 2px 6px 1px rgb(60, 98, 224);
+  border: solid 1px rgb(159, 171, 180);
+  box-shadow: inset 2px 2px 6px 1px rgb(211, 212, 216);
   width: 100px;
   height: 100px;
   font-weight: 800;
@@ -35,8 +76,18 @@ body {
 
 .piece {
   width: 60%;
-  filter: invert(100%);
+  /*filter: invert(100%);*/
   animation: fadeIn 0.5s;
+}
+
+.red-filter {
+  filter: invert(45%) sepia(60%) saturate(5527%) hue-rotate(340deg)
+    brightness(93%) contrast(99%);
+}
+
+.blue-filter {
+  filter: invert(31%) sepia(88%) saturate(3528%) hue-rotate(225deg)
+    brightness(91%) contrast(102%);
 }
 
 @keyframes fadeIn {
@@ -61,14 +112,40 @@ body {
 
 .result-status-container {
   padding: 1%;
-  height: 100px;
+  height: 140px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: white;
+}
+
+.result-text {
+  box-sizing: border-box;
+  color: black;
   font-size: 2em;
   font-weight: 600;
+  height: 45px;
 }
+
+.scoreboard {
+  width: 24rem;
+  display: flex;
+}
+
+.score-bar {
+  width: 50%;
+  height: 2rem;
+  transition: 0.5s;
+}
+
+.score-bar#blue-bar {
+  background-color: #3452eb;
+}
+
+.score-bar#red-bar {
+  background-color: #eb4034;
+}
+
 
 .reset-btn {
   color: white;
@@ -76,17 +153,14 @@ body {
   font-size: 20px;
   letter-spacing: 1px;
   padding: 1rem;
-  width: 8rem;
-  background-color: rgb(110, 143, 235);
+  width: 200px;
+  background-color: rgb(26, 211, 41);
   border: none;
-  border-radius: 50px;
-  box-shadow: 2px 2px 6px 1px rgb(60, 98, 224);
+  box-shadow: 2px 2px 6px 1px rgb(125, 125, 126);
   cursor: pointer;
   transition: 0.5s;
 }
 
 .reset-btn:hover {
   transform: scale(1.1);
-  background-color: rgb(113, 147, 241);
-  box-shadow: 2px 2px 6px 1px rgb(89, 118, 212);
 }
