@@ -2,6 +2,10 @@ let player = (name, model) => {
   let turnsPlayed = 0;
   let score = 0;
 
+  let setName = (newName) => {
+    name = newName;
+  };
+
   let getName = () => {
     return name;
   };
@@ -41,6 +45,7 @@ let player = (name, model) => {
     setScore,
     resetTurns,
     resetScore,
+    setName,
   };
 };
 
@@ -114,7 +119,6 @@ const gameboard = (() => {
     //Must execute controller.condition() here
     controller.condition(parseInt(tileNum));
     player.playTurn();
-    controller.isTie();
   };
 
   return {
@@ -166,6 +170,8 @@ let controller = (() => {
             }
           }
         }
+      } else {
+        controller.isTie();
       }
     }
   };
@@ -177,6 +183,7 @@ let controller = (() => {
       9
     ) {
       display.displayOutcome();
+      display.lockToggle();
     }
   };
 
@@ -191,8 +198,14 @@ let display = (() => {
   const resetButton = document.querySelector(".reset-btn");
   const nextGameButton = document.querySelector(".next-game");
   const resultText = document.querySelector(".result-text");
-  const blueScoreElement = document.getElementById("blue");
-  const redScoreElement = document.getElementById("red");
+
+  const blueScoreElement = document.getElementById("blue-bar");
+  const redScoreElement = document.getElementById("red-bar");
+
+  const blueNameElement = document.getElementById("blue-name");
+  const redNameElement = document.getElementById("red-name");
+
+  const nameInputFields = document.querySelectorAll(".name-input");
 
   for (i = 0; i < 9; i++) {
     let tileElement = document.createElement("div");
@@ -224,6 +237,17 @@ let display = (() => {
     gameboard.nextGame();
   });
 
+  nameInputFields.forEach((element) => {
+    element.addEventListener("input", (e) => {
+      if (e.target.id === "blue-name") {
+        gameboard.getPlayers()[0].setName(e.target.value);
+      }
+      if (e.target.id === "red-name") {
+        gameboard.getPlayers()[1].setName(e.target.value);
+      }
+    });
+  });
+
   let clear = () => {
     const pieces = document.querySelectorAll(".piece");
     pieces.forEach((piece) => {
@@ -252,10 +276,10 @@ let display = (() => {
       //tie
     } else if (winner.getModel() === "x") {
       resultText.style.color = "#3452eb";
-      resultText.innerHTML = "Player X wins";
+      resultText.innerHTML = `${winner.getName()} wins!`;
     } else {
       resultText.style.color = "#eb4034";
-      resultText.innerHTML = "Player O wins";
+      resultText.innerHTML = `${winner.getName()} wins!`;
     }
   };
 
@@ -271,7 +295,7 @@ let display = (() => {
     if (playerOneScore === playerTwoScore + 1) {
       blueScoreElement.style.width = "65%";
       redScoreElement.style.width = "35%";
-    }else if (playerOneScore === playerTwoScore + 2) {
+    } else if (playerOneScore === playerTwoScore + 2) {
       blueScoreElement.style.width = "80%";
       redScoreElement.style.width = "20%";
     }

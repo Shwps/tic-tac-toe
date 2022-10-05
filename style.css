@@ -37,13 +37,13 @@ input[type="text"] {
   color: rgba(255, 255, 255, 0.589);
 }
 
-#blue-player {
+#blue-name {
   border-radius: 10px 0 0 0;
   padding-left: 6px;
   background-color: #3452eb;
 }
 
-#red-player {
+#red-name {
   border-radius: 0 10px 0 0;
   padding-right: 6px;
   background-color: #eb4034;
@@ -147,7 +147,7 @@ input[type="text"] {
 }
 
 
-.reset-btn {
+.btn {
   color: white;
   font-weight: 500;
   font-size: 20px;
@@ -159,8 +159,9 @@ input[type="text"] {
   box-shadow: 2px 2px 6px 1px rgb(125, 125, 126);
   cursor: pointer;
   transition: 0.5s;
+  margin:1em;
 }
 
-.reset-btn:hover {
+.btn:hover {
   transform: scale(1.1);
 }
