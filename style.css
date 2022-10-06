@@ -50,8 +50,22 @@ input[type="text"] {
   text-align: end;
 }
 
-.scoreboard-lower {
-  background-color: white;
+.score {
+  display:grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 20px;
+  width:3rem;
+  background-color: rgb(216, 216, 216);
+  color: rgb(75, 73, 73);
+}
+
+#blue-score{
+  border-radius: 10px 0px 0px 10px;
+}
+
+#red-score {
+  border-radius: 0px 10px 10px 0px;
 }
 
 .tile {

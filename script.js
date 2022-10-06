@@ -71,8 +71,8 @@ const gameboard = (() => {
     gameboardArray.push(Object.create(tile(tileCounter++)));
   }
 
-  let playerOne = Object.create(player("one", "x"));
-  let playerTwo = Object.create(player("two", "o"));
+  let playerOne = Object.create(player("Blue", "x"));
+  let playerTwo = Object.create(player("Red", "o"));
 
   let getPlayers = () => {
     return [playerOne, playerTwo];
@@ -117,8 +117,17 @@ const gameboard = (() => {
     let player = controller.nextPlayer();
     tile.setPlayer(player);
     //Must execute controller.condition() here
-    controller.condition(parseInt(tileNum));
-    player.playTurn();
+    if (controller.isWinningMove(tileNum)) {
+      player.setScore();
+      display.displayOutcome(player);
+      display.lockToggle();
+      display.displayScore();
+      player.playTurn();
+    }else {
+      player.playTurn();
+      controller.isTie();
+    }
+    
   };
 
   return {
@@ -154,7 +163,7 @@ let controller = (() => {
     }
   };
 
-  let condition = (move) => {
+  let isWinningMove = (move) => {
     const player = nextPlayer();
     for (const winMove of winningMoves) {
       if (winMove.includes(move)) {
@@ -163,15 +172,10 @@ let controller = (() => {
           if (gameboard.getTile(tileNum).getPlayer() === player) {
             playerTileCount++;
             if (playerTileCount === 3) {
-              player.setScore();
-              display.displayOutcome(player);
-              display.lockToggle();
-              display.displayScore();
+              return true;
             }
           }
         }
-      } else {
-        controller.isTie();
       }
     }
   };
@@ -187,23 +191,21 @@ let controller = (() => {
     }
   };
 
-  return { nextPlayer, condition, isTie };
+  return { nextPlayer, isWinningMove, isTie };
 })();
 
 let display = (() => {
   const gameContainer = document.querySelector(".game-container");
-  const resultStatusContainer = document.querySelector(
-    ".result-status-container"
-  );
+  
   const resetButton = document.querySelector(".reset-btn");
   const nextGameButton = document.querySelector(".next-game");
   const resultText = document.querySelector(".result-text");
 
-  const blueScoreElement = document.getElementById("blue-bar");
-  const redScoreElement = document.getElementById("red-bar");
+  const blueScoreBarElement = document.getElementById("blue-bar");
+  const redScoreBarElement = document.getElementById("red-bar");
 
-  const blueNameElement = document.getElementById("blue-name");
-  const redNameElement = document.getElementById("red-name");
+  const blueScoreNumericalElement = document.getElementById("blue-score");
+  const redScoreNumericalElement = document.getElementById("red-score");
 
   const nameInputFields = document.querySelectorAll(".name-input");
 
@@ -217,7 +219,7 @@ let display = (() => {
   gameContainer.addEventListener("click", (e) => {
     let tileElement = e.target;
     if (tileElement.classList.contains("tile")) {
-      let tileNum = tileElement.dataset.tileNumber;
+      let tileNum = parseInt(tileElement.dataset.tileNumber);
       //check which player has next turn
       let player = controller.nextPlayer();
       if (gameboard.getTile(tileNum).getPlayer() === undefined) {
@@ -284,37 +286,40 @@ let display = (() => {
   };
 
   let displayScore = () => {
-    let playerOneScore = gameboard.getPlayers()[0].getScore();
-    let playerTwoScore = gameboard.getPlayers()[1].getScore();
+    let blueScore = gameboard.getPlayers()[0].getScore();
+    let redScore = gameboard.getPlayers()[1].getScore();
 
-    if (playerOneScore === playerTwoScore) {
-      blueScoreElement.style.width = "50%";
-      redScoreElement.style.width = "50%";
+    if (blueScore === redScore) {
+      blueScoreBarElement.style.width = "50%";
+      redScoreBarElement.style.width = "50%";
     }
 
-    if (playerOneScore === playerTwoScore + 1) {
-      blueScoreElement.style.width = "65%";
-      redScoreElement.style.width = "35%";
-    } else if (playerOneScore === playerTwoScore + 2) {
-      blueScoreElement.style.width = "80%";
-      redScoreElement.style.width = "20%";
+    if (blueScore === redScore + 1) {
+      blueScoreBarElement.style.width = "65%";
+      redScoreBarElement.style.width = "35%";
+    } else if (blueScore === redScore + 2) {
+      blueScoreBarElement.style.width = "80%";
+      redScoreBarElement.style.width = "20%";
     }
 
-    if (playerTwoScore === playerOneScore + 1) {
-      blueScoreElement.style.width = "35%";
-      redScoreElement.style.width = "65%";
-    } else if (playerTwoScore === playerOneScore + 2) {
-      blueScoreElement.style.width = "20%";
-      redScoreElement.style.width = "80%";
+    if (redScore === blueScore + 1) {
+      blueScoreBarElement.style.width = "35%";
+      redScoreBarElement.style.width = "65%";
+    } else if (redScore === blueScore + 2) {
+      blueScoreBarElement.style.width = "20%";
+      redScoreBarElement.style.width = "80%";
     }
 
-    if (playerTwoScore === 3) {
-      blueScoreElement.style.width = "0%";
-      redScoreElement.style.width = "100%";
-    } else if (playerOneScore === 3) {
-      blueScoreElement.style.width = "100%";
-      redScoreElement.style.width = "0%";
+    if (redScore === 3) {
+      blueScoreBarElement.style.width = "0%";
+      redScoreBarElement.style.width = "100%";
+    } else if (blueScore === 3) {
+      blueScoreBarElement.style.width = "100%";
+      redScoreBarElement.style.width = "0%";
     }
+
+    blueScoreNumericalElement.textContent = blueScore;
+    redScoreNumericalElement.textContent = redScore;
   };
 
   let lockToggle = () => {
