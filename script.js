@@ -52,6 +52,7 @@ let player = (name, model) => {
 const gameboard = (() => {
   let gameboardArray = [];
   let tileCounter = 0;
+  let isLocked = false;
 
   let tile = (number) => {
     let player;
@@ -109,7 +110,11 @@ const gameboard = (() => {
     });
 
     display.clear();
-    display.lockToggle();
+    if(isLocked){
+      display.lockToggle();
+      isLocked = false;
+    }
+      
   };
 
   let play = (tileNum) => {
@@ -121,6 +126,7 @@ const gameboard = (() => {
       player.setScore();
       display.displayOutcome(player);
       display.lockToggle();
+      isLocked = true;
       display.displayScore();
       player.playTurn();
     }else {

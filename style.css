@@ -2,6 +2,7 @@
 
 * {
   font-family: Fira Sans, sans-serif;
+  margin:0;
 }
 
 body {
@@ -16,8 +17,7 @@ body {
 .name-selection {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin: 2rem;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 10px 10px;
   box-shadow: 0px 2px 8px 2px rgba(134, 134, 134, 0.329);
 }
 
@@ -38,13 +38,13 @@ input[type="text"] {
 }
 
 #blue-name {
-  border-radius: 10px 0 0 0;
+  border-radius: 10px 0 0 10px;
   padding-left: 6px;
   background-color: #3452eb;
 }
 
 #red-name {
-  border-radius: 0 10px 0 0;
+  border-radius: 0 10px 10px 0;
   padding-right: 6px;
   background-color: #eb4034;
   text-align: end;
@@ -122,11 +122,10 @@ input[type="text"] {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 1em;
+  margin: 2rem;
 }
 
 .result-status-container {
-  padding: 1%;
-  height: 140px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,10 +134,12 @@ input[type="text"] {
 
 .result-text {
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 3em;
   color: black;
   font-size: 2em;
   font-weight: 600;
-  height: 45px;
 }
 
 .scoreboard {
@@ -160,22 +161,41 @@ input[type="text"] {
   background-color: #eb4034;
 }
 
+.menu-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:2em;
+}
+
 
 .btn {
-  color: white;
-  font-weight: 500;
-  font-size: 20px;
-  letter-spacing: 1px;
-  padding: 1rem;
-  width: 200px;
-  background-color: rgb(26, 211, 41);
+  padding:1em;
+  border-radius: 50px;
+  background-color: rgb(216, 216, 216);
   border: none;
-  box-shadow: 2px 2px 6px 1px rgb(125, 125, 126);
-  cursor: pointer;
+  box-shadow: inset 2px 2px 6px 1px rgb(125, 125, 126);
+  display:grid;
+  place-items:center;
   transition: 0.5s;
-  margin:1em;
 }
 
-.btn:hover {
-  transform: scale(1.1);
+.reset-btn {
+  
 }
+
+#reset-logo {
+  transition: 0.5s;
+  
+}
+
+.reset-btn:hover #reset-logo {
+  transform: rotate(-1turn) scale(0.9);
+
+}
+
+.reset-btn:hover {
+  box-shadow: inset 2px 2px 9px 1px rgb(46, 46, 46);
+}
+
+
