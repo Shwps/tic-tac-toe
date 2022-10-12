@@ -140,6 +140,7 @@ input[type="text"] {
   color: black;
   font-size: 2em;
   font-weight: 600;
+  transition: 0.5s ease-out;
 }
 
 .scoreboard {
@@ -171,17 +172,29 @@ input[type="text"] {
 
 .btn {
   padding:1em;
-  border-radius: 50px;
-  background-color: rgb(216, 216, 216);
+  border-radius: 20px;
+  background-color: rgb(166, 206, 158);
   border: none;
-  box-shadow: inset 2px 2px 6px 1px rgb(125, 125, 126);
+  box-shadow: inset 2px 2px 6px 1px rgb(69, 102, 71);
   display:grid;
   place-items:center;
   transition: 0.5s;
+  cursor:pointer;
 }
 
 .reset-btn {
   
+}
+
+.next-game {
+  width: 8rem;
+  background-color: rgb(166, 206, 158);
+  box-shadow: inset 2px 2px 6px 1px rgb(69, 102, 71);
+}
+
+.next-game:disabled {
+  background-color: rgb(216, 216, 216);
+  cursor:default;
 }
 
 #reset-logo {
@@ -195,7 +208,7 @@ input[type="text"] {
 }
 
 .reset-btn:hover {
-  box-shadow: inset 2px 2px 9px 1px rgb(46, 46, 46);
+  box-shadow: inset 2px 2px 9px 1px rgb(36, 58, 38);
 }
 
 

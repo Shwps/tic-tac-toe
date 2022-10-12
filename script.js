@@ -114,7 +114,7 @@ const gameboard = (() => {
       display.lockToggle();
       isLocked = false;
     }
-      
+    
   };
 
   let play = (tileNum) => {
@@ -243,6 +243,7 @@ let display = (() => {
 
   nextGameButton.addEventListener("click", () => {
     gameboard.nextGame();
+    display.toggleNextGameButton();
   });
 
   nameInputFields.forEach((element) => {
@@ -289,7 +290,16 @@ let display = (() => {
       resultText.style.color = "#eb4034";
       resultText.innerHTML = `${winner.getName()} wins!`;
     }
+    toggleNextGameButton();
   };
+
+  let toggleNextGameButton = () => {
+    if(nextGameButton.hasAttribute("disabled")){
+      nextGameButton.removeAttribute("disabled");
+    } else {
+      nextGameButton.setAttribute("disabled", "");
+    }
+  }
 
   let displayScore = () => {
     let blueScore = gameboard.getPlayers()[0].getScore();
@@ -335,5 +345,5 @@ let display = (() => {
       gameContainer.classList.add("gameboard-lock");
     }
   };
-  return { displayOutcome, lockToggle, clear, displayScore };
+  return { displayOutcome, lockToggle, clear, displayScore, toggleNextGameButton };
 })();
