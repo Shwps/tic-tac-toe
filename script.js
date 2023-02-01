@@ -110,11 +110,10 @@ const gameboard = (() => {
     });
 
     display.clear();
-    if(isLocked){
+    if (isLocked) {
       display.lockToggle();
       isLocked = false;
     }
-    
   };
 
   let play = (tileNum) => {
@@ -129,11 +128,14 @@ const gameboard = (() => {
       isLocked = true;
       display.displayScore();
       player.playTurn();
-    }else {
+      if (player.getScore() === 3) {
+        display.displayWinnerModal(player);
+        reset();
+      }
+    } else {
       player.playTurn();
       controller.isTie();
     }
-    
   };
 
   return {
@@ -202,7 +204,7 @@ let controller = (() => {
 
 let display = (() => {
   const gameContainer = document.querySelector(".game-container");
-  
+
   const resetButton = document.querySelector(".reset-btn");
   const nextGameButton = document.querySelector(".next-game");
   const resultText = document.querySelector(".result-text");
@@ -212,6 +214,9 @@ let display = (() => {
 
   const blueScoreNumericalElement = document.getElementById("blue-score");
   const redScoreNumericalElement = document.getElementById("red-score");
+
+  const redColor = "#eb4034";
+  const blueColor = "#3452eb";
 
   const nameInputFields = document.querySelectorAll(".name-input");
 
@@ -271,10 +276,10 @@ let display = (() => {
     let moveContainer = document.createElement("img");
     if (controller.nextPlayer().getModel() === "x") {
       moveContainer.classList.add("piece", "blue-filter");
-      moveContainer.src = "/img/close.png";
+      moveContainer.src = "img/close.png";
     } else {
       moveContainer.classList.add("piece", "red-filter");
-      moveContainer.src = "/img/circle.png";
+      moveContainer.src = "img/circle.png";
     }
     tileElement.appendChild(moveContainer);
   };
@@ -284,22 +289,22 @@ let display = (() => {
       resultText.innerHTML = "It's a tie";
       //tie
     } else if (winner.getModel() === "x") {
-      resultText.style.color = "#3452eb";
+      resultText.style.color = blueColor;
       resultText.innerHTML = `${winner.getName()} wins!`;
     } else {
-      resultText.style.color = "#eb4034";
+      resultText.style.color = redColor;
       resultText.innerHTML = `${winner.getName()} wins!`;
     }
     toggleNextGameButton();
   };
 
   let toggleNextGameButton = () => {
-    if(nextGameButton.hasAttribute("disabled")){
+    if (nextGameButton.hasAttribute("disabled")) {
       nextGameButton.removeAttribute("disabled");
     } else {
       nextGameButton.setAttribute("disabled", "");
     }
-  }
+  };
 
   let displayScore = () => {
     let blueScore = gameboard.getPlayers()[0].getScore();
@@ -338,6 +343,24 @@ let display = (() => {
     redScoreNumericalElement.textContent = redScore;
   };
 
+  let displayWinnerModal = (winner) => {
+    const closeModal = document.querySelector(".close-button");
+    const modal = document.querySelector("#modal");
+    const setWinner = document.querySelector(".set-winner");
+    setWinner.textContent = `The set winner is ${winner.getName()}`;
+    if (winner.getModel() === "x") {
+      setWinner.style.color = blueColor;
+    } else {
+      setWinner.style.color = redColor;
+    }
+    modal.showModal();
+
+    closeModal.addEventListener("click", () => {
+      modal.close();
+      display.toggleNextGameButton();
+    });
+  };
+
   let lockToggle = () => {
     if (gameContainer.classList.contains("gameboard-lock")) {
       gameContainer.classList.remove("gameboard-lock");
@@ -345,5 +368,12 @@ let display = (() => {
       gameContainer.classList.add("gameboard-lock");
     }
   };
-  return { displayOutcome, lockToggle, clear, displayScore, toggleNextGameButton };
+  return {
+    displayOutcome,
+    displayWinnerModal,
+    lockToggle,
+    clear,
+    displayScore,
+    toggleNextGameButton,
+  };
 })();

@@ -132,7 +132,7 @@ input[type="text"] {
   align-items: center;
 }
 
-.result-text {
+.result-text, .set-winner{
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -182,10 +182,6 @@ input[type="text"] {
   cursor:pointer;
 }
 
-.reset-btn {
-  
-}
-
 .next-game {
   width: 8rem;
   background-color: rgb(166, 206, 158);
@@ -210,5 +206,25 @@ input[type="text"] {
 .reset-btn:hover {
   box-shadow: inset 2px 2px 9px 1px rgb(36, 58, 38);
 }
+
+#modal {
+  padding: 1em;
+  max-width:50ch;
+  border: 0;
+  box-shadow: 0 0 1m rgb(0 0 0/ .3);
+  border-radius:1em;
+  margin: auto;
+}
+
+#modal::backdrop{
+  background: #3a3a3a8c;
+}
+
+.inner-modal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 
